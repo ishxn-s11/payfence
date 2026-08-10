@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Design tokens — Cerebrium-style dark theme === */
+:root {
+  --bg: #101421;          /* charcoal — page background */
+  --surface: #161b28;     /* card surface */
+  --surface-2: #1c2230;   /* raised / hover surface */
+  --border: #232b3c;      /* hairline borders */
+  --border-strong: #33415f;
+  --text: #eef2f5;        /* primary text (slate-50) */
+  --text-muted: #7d8aa5;  /* secondary text */
+  --text-faint: #5f6b85;  /* tertiary text */
+  --brand: #ff488b;       /* Cerebrium pink */
+  --brand-strong: #f6186a;
+  --good: #86efac;
+  --warn: #fdba74;
+  --bad: #f87171;
+  --mono: ui-monospace, "SFMono-Regular", "Cascadia Code", Consolas, monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  /* Cerebrium-inspired layered background: charcoal base with faint
+     hot-pink and periwinkle glows on opposite corners. */
+  background:
+    radial-gradient(560px 340px at 82% -10%, rgba(255, 72, 139, 0.10), transparent 60%),
+    radial-gradient(900px 480px at 8% 115%, rgba(88, 100, 144, 0.20), transparent 62%),
+    radial-gradient(520px 320px at 50% 45%, rgba(144, 170, 222, 0.05), transparent 60%),
+    linear-gradient(180deg, #101421 0%, #121726 55%, #101421 100%);
+  color: var(--text);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(255, 72, 139, 0.35);
+}
+
+input[type="checkbox"],
+input[type="range"] {
+  accent-color: var(--brand);
+}
+
+@layer components {
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.625rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  }
+  .card-header {
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #eef2f5;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 0.25rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  }
+  .btn-primary {
+    background: linear-gradient(180deg, var(--brand), var(--brand-strong));
+    color: #101421;
+    box-shadow: 0 1px 2px rgba(246, 24, 106, 0.35);
+  }
+  .btn-primary:hover {
+    filter: brightness(1.08);
+  }
+  .btn-secondary {
+    background: var(--surface-2);
+    color: #c6cee0;
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover {
+    border-color: var(--border-strong);
+    background: #202838;
+  }
+  .btn-ghost {
+    color: var(--text-muted);
+  }
+  .btn-ghost:hover {
+    background: var(--surface-2);
+  }
+  .input {
+    width: 100%;
+    border-radius: 0.375rem;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.875rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 1px var(--brand);
+  }
+  .label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 9999px;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+  }
+}
+
+/* === Dark remap — overrides Tailwind color utilities (unlayered = wins) ===
+   Components are written against the standard slate/white scale; this block
+   re-maps those scales onto the charcoal/pink palette so no light-theme stray
+   survives. */
+
+/* surfaces */
+.bg-white { background-color: var(--surface); }
+.bg-white\/90 { background-color: rgba(16, 20, 33, 0.9); }
+.bg-slate-50 { background-color: var(--surface-2); }
+.bg-slate-100 { background-color: #1c2230; }
+.bg-slate-200 { background-color: #242d40; }
+.bg-slate-50\/50 { background-color: rgba(28, 34, 48, 0.5); }
+.bg-slate-50\/60 { background-color: rgba(28, 34, 48, 0.6); }
+.hover\:bg-slate-50 { background-color: var(--surface-2); }
+.hover\:bg-slate-100 { background-color: #202838; }
+.hover\:bg-slate-50\/60 { background-color: rgba(32, 40, 56, 0.7); }
+
+/* status tints (dark) */
+.bg-green-50 { background-color: #0c2b1d; }
+.bg-red-50 { background-color: #38131a; }
+.bg-blue-50 { background-color: #12273f; }
+.bg-orange-50 { background-color: #2e1f0c; }
+.bg-violet-50 { background-color: #221e42; }
+.bg-brand-50 { background-color: #3a1226; }
+
+/* text — inverted luminance */
+.text-slate-900 { color: #eef2f5; }
+.text-slate-800 { color: #e2e8f0; }
+.text-slate-700 { color: #c6cee0; }
+.text-slate-600 { color: #94a3b8; }
+.text-slate-500 { color: var(--text-muted); }
+.text-slate-400 { color: var(--text-muted); }
+.text-slate-300 { color: var(--text-faint); }
+.text-green-700 { color: var(--good); }
+.text-red-700 { color: #fda4af; }
+.text-red-600 { color: var(--bad); }
+.text-blue-700 { color: #93c5fd; }
+.text-orange-700 { color: var(--warn); }
+.text-violet-700 { color: #c4b5fd; }
+.text-brand-700 { color: #f8a2d3; }
+.hover\:text-slate-900 { color: #eef2f5; }
+.hover\:text-red-600 { color: var(--bad); }
+
+/* borders & dividers */
+.border-slate-50 { border-color: var(--surface-2); }
+.border-slate-100 { border-color: var(--border); }
+.border-slate-200 { border-color: var(--border); }
+.border-slate-300 { border-color: var(--border-strong); }
+.border-red-200 { border-color: #7f1d1d; }
+.divide-slate-50 { border-color: var(--border); }
