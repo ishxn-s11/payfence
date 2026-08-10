@@ -1,0 +1,7 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/ledger-persistent" },
+    { "path": "./packages/policy-engine" }
+  ]
+}

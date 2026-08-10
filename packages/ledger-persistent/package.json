@@ -1,0 +1,22 @@
+{
+  "name": "@pay-fence/ledger-persistent",
+  "version": "0.1.0",
+  "description": "Persistent spending ledger with time-windowed queries for agent payment policy enforcement.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@payai-sh/core": "^0.0.3"
+  },
+  "license": "MIT"
+}

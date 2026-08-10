@@ -1,0 +1,39 @@
+{
+  "name": "pay-fence",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Policy-enforcement layer for x402 AI agent payments: spending limits, merchant allowlists, transaction frequency, rolling budgets, and risk policies.",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "check": "npm run build && node --test packages/*/test/*.test.mjs",
+    "demo": "npm run build && node examples/basic-usage/demo.mjs",
+    "demo:frequency": "npm run build && node examples/frequency-limits/demo.mjs",
+    "demo:risk": "npm run build && node examples/risk-scoring/demo.mjs",
+    "demo:rolling": "npm run build && node examples/rolling-budgets/demo.mjs",
+    "start": "npm run build && node examples/basic-usage/demo.mjs && node examples/frequency-limits/demo.mjs && node examples/risk-scoring/demo.mjs && node examples/rolling-budgets/demo.mjs",
+    "dashboard:dev": "cd packages/dashboard && npm run dev",
+    "dashboard:build": "cd packages/dashboard && npm run build",
+    "dashboard:start": "cd packages/dashboard && npm start"
+  },
+  "keywords": [
+    "x402",
+    "ai-agents",
+    "payments",
+    "policy",
+    "spending-limits",
+    "risk",
+    "rate-limiting"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@payai-sh/core": "^0.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "typescript": "^5.8.3"
+  }
+}
