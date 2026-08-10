@@ -1,0 +1,30 @@
+{
+  "name": "@pay-fence/dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Organization dashboard for managing Pay-Fence policies, grants, agents, and live payment monitoring.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pay-fence/ledger-persistent": "*",
+    "@pay-fence/policy-engine": "*",
+    "animejs": "^4.5.0",
+    "gsap": "^3.15.0",
+    "next": "^15.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
+  }
+}
