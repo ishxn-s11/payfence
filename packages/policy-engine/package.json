@@ -1,0 +1,23 @@
+{
+  "name": "@pay-fence/policy-engine",
+  "version": "0.1.0",
+  "description": "Policy engine for x402 agent payments: spending limits, merchant allowlists, frequency, rolling budgets, and risk scoring.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@pay-fence/ledger-persistent": "*",
+    "@payai-sh/core": "^0.0.3"
+  },
+  "license": "MIT"
+}
