@@ -162,17 +162,6 @@ that power the frequency and rolling-budget rules.
 
 New backends (Redis, Postgres, remote) only need to implement the interface.
 
-## Relationship to the source projects
-
-This codebase **imports and builds on `@payai-sh/core`** (rules 1–7, money math,
-receipt creation) rather than forking it. It re-implements the x402 interceptor
-(instead of composing `createPayAIFetch`) only because that function hard-codes
-the base `evaluatePayment`; re-implementing lets the enhanced pipeline (frequency
-→ rolling windows → risk) run before settlement, in the spirit of both projects.
-The ERC-7715/1Shot integration from AgentSpendGuard is intentionally left out so
-the engine stays payment-rail agnostic — the `payer` hook is where a real x402
-client or ERC-7710 relay plugs in.
-
 ## Organization dashboard
 
 An interactive **Next.js** web app (`packages/dashboard`) that runs the policy engine
