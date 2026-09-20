@@ -35,9 +35,6 @@ settlement unless every enabled rule passes**:
 | 9 | **Rolling-window budget** | *new* | window spend + amount > `maxSpend`, or `maxTransactions` hit |
 | 10 | **Risk score** | *new* | weighted risk signals exceed `maxRiskScore` |
 
-Rules 1–7 are reused verbatim from `@payai-sh/core`. Rules 8–10 are the value
-this project adds.
-
 ## Layout
 
 ```
