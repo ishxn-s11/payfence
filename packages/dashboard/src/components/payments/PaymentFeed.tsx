@@ -9,6 +9,7 @@ import { money } from "@/lib/format";
 import { explainDecision, type DecisionExplanation } from "@/lib/explain";
 import { EmptyState, ReasonChip, RiskPill, StatusBadge, TxHash } from "@/components/ui";
 import { prefersReducedMotion } from "@/components/motion";
+import { PaymentCharts } from "./PaymentCharts";
 
 interface Filters {
   agentId: string;
@@ -89,7 +90,11 @@ export function PaymentFeed({
   const statusCount = (allowed: boolean) => attempts.filter((a) => a.allowed === allowed).length;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
+      {/* Summary charts */}
+      {attempts.length > 0 && <PaymentCharts attempts={attempts} />}
+
+      {/* Filters */}
       <div className="flex flex-wrap items-center gap-2">
         <select className="input w-auto" value={filters.agentId} onChange={(e) => setFilters((f) => ({ ...f, agentId: e.target.value }))}>
           <option value="">All agents</option>
@@ -105,14 +110,14 @@ export function PaymentFeed({
           <option value="false">Denied</option>
         </select>
         <input className="input w-56" placeholder="Filter merchant…" value={filters.q} onChange={(e) => setFilters((f) => ({ ...f, q: e.target.value }))} />
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-[var(--text-faint)]">
           {statusCount(true)} allowed · {statusCount(false)} denied
         </span>
         <div className="ml-auto flex gap-2">
-          <button className="btn btn-secondary" onClick={() => void load()} disabled={loading}>
+          <button className="btn btn-secondary text-sm" onClick={() => void load()} disabled={loading}>
             {loading ? "…" : "Refresh"}
           </button>
-          <button className="btn btn-secondary" onClick={() => void seed()} disabled={seeding}>
+          <button className="btn btn-secondary text-sm" onClick={() => void seed()} disabled={seeding}>
             {seeding ? "Seeding…" : "Load demo data"}
           </button>
         </div>
@@ -130,17 +135,17 @@ export function PaymentFeed({
         />
       ) : (
         <div className="card overflow-x-auto">
-          <table className="w-full min-w-[820px] text-sm">
+          <table className="w-full min-w-[820px] text-[0.8125rem]">
             <thead>
-              <tr className="border-b border-slate-100 text-left text-xs uppercase tracking-wide text-slate-400">
+              <tr className="border-b border-[var(--border)] text-left text-[0.625rem] uppercase tracking-[0.06em] text-[var(--text-faint)]">
                 <th className="w-6 px-2 py-2.5" />
-                <th className="px-4 py-2.5">Time</th>
-                <th className="px-4 py-2.5">Agent</th>
-                <th className="px-4 py-2.5">Merchant</th>
-                <th className="px-4 py-2.5 text-right">Amount</th>
-                <th className="px-4 py-2.5">Status</th>
-                <th className="px-4 py-2.5 text-right">Risk</th>
-                <th className="px-4 py-2.5">Settlement</th>
+                <th className="px-4 py-2.5 font-semibold">Time</th>
+                <th className="px-4 py-2.5 font-semibold">Agent</th>
+                <th className="px-4 py-2.5 font-semibold">Merchant</th>
+                <th className="px-4 py-2.5 text-right font-semibold">Amount</th>
+                <th className="px-4 py-2.5 font-semibold">Status</th>
+                <th className="px-4 py-2.5 text-right font-semibold">Risk</th>
+                <th className="px-4 py-2.5 font-semibold">Settlement</th>
               </tr>
             </thead>
             <tbody ref={bodyRef}>
@@ -185,37 +190,37 @@ function ExplainRow({
 }) {
   return (
     <>
-      <tr data-row className="cursor-pointer border-b border-slate-50 hover:bg-slate-50/60" onClick={toggle}>
-        <td className="px-2 py-2">
-          <span className={`inline-block text-slate-300 transition-transform ${open ? "rotate-90" : ""}`}>▸</span>
+      <tr data-row className="cursor-pointer border-b border-[var(--border)] transition-colors hover:bg-[var(--surface-2)]" onClick={toggle}>
+        <td className="px-2 py-2.5">
+          <span className={`inline-block text-[var(--text-faint)] transition-transform duration-200 ${open ? "rotate-90" : ""}`}>▸</span>
         </td>
-        <td className="px-4 py-2 text-slate-500">{fmtTime(a.createdAt)}</td>
-        <td className="px-4 py-2 font-medium text-slate-700">{a.agentName}</td>
-        <td className="px-4 py-2 font-mono text-xs text-slate-600">{a.merchant}</td>
-        <td className="px-4 py-2 text-right tabular-nums">{money(a.amount, a.currency)}</td>
-        <td className="px-4 py-2">
+        <td className="px-4 py-2.5 text-[var(--text-muted)]">{fmtTime(a.createdAt)}</td>
+        <td className="px-4 py-2.5 font-semibold text-[var(--text-secondary)]">{a.agentName}</td>
+        <td className="px-4 py-2.5 font-mono text-xs text-[var(--text-muted)]">{a.merchant}</td>
+        <td className="px-4 py-2.5 text-right tabular-nums font-semibold text-[var(--text-secondary)]">{money(a.amount, a.currency)}</td>
+        <td className="px-4 py-2.5">
           <StatusBadge allowed={a.allowed} />
         </td>
-        <td className="px-4 py-2 text-right">
+        <td className="px-4 py-2.5 text-right">
           <RiskPill score={a.riskScore} />
         </td>
-        <td className="px-4 py-2">
+        <td className="px-4 py-2.5">
           <TxHash hash={a.transactionHash} />
         </td>
       </tr>
       {open && (
-        <tr className="border-b border-slate-100 bg-slate-50/50">
+        <tr className="border-b border-[var(--border)] bg-[var(--surface-2)]">
           <td colSpan={8} className="px-6 py-4">
             <div className="mb-1 flex items-center gap-2">
-              <span className="font-semibold text-slate-800">{explanation.title}</span>
+              <span className="font-semibold text-[var(--text)]">{explanation.title}</span>
               <ReasonChip reason={a.reason} />
             </div>
-            <p className="text-sm text-slate-600">{explanation.summary}</p>
+            <p className="text-sm text-[var(--text-muted)]">{explanation.summary}</p>
             {explanation.detail.length > 0 && (
-              <ul className="mt-2 space-y-1 text-xs text-slate-500">
+              <ul className="mt-2 space-y-1 text-xs text-[var(--text-faint)]">
                 {explanation.detail.map((line, i) => (
                   <li key={i} className="flex gap-2">
-                    <span className="text-slate-300">•</span>
+                    <span className="text-[var(--text-faint)]">•</span>
                     <span>{line}</span>
                   </li>
                 ))}

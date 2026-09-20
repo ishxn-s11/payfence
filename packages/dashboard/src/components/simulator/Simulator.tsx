@@ -130,9 +130,9 @@ export function Simulator({ grants }: { grants: DashboardGrant[] }) {
   const displayCurrency = activeGrant?.totalBudget.currency ?? "USDC";
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
-      <div className="card p-5">
-        <h3 className="mb-4 font-semibold text-slate-800">Craft a payment</h3>
+    <div className="grid gap-5 sm:gap-6 lg:grid-cols-5">
+      <div className="card p-5 sm:p-6 lg:col-span-3">
+        <h3 className="mb-4 text-lg font-semibold text-[var(--text)]">Craft a payment</h3>
         <div className="space-y-4">
           <div>
             <label className="label">Grant</label>
@@ -153,10 +153,10 @@ export function Simulator({ grants }: { grants: DashboardGrant[] }) {
               ))}
             </datalist>
             {activeGrant?.allowedMerchants?.length ? (
-              <p className="mt-1 text-xs text-slate-400">allowlist: {activeGrant.allowedMerchants.join(", ")}</p>
+              <p className="mt-1 text-xs text-[var(--text-faint)]">allowlist: {activeGrant.allowedMerchants.join(", ")}</p>
             ) : null}
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="label">Amount ({unit})</label>
               <input className="input" inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value)} />
@@ -173,46 +173,48 @@ export function Simulator({ grants }: { grants: DashboardGrant[] }) {
             <label className="label">Purpose</label>
             <input className="input" value={purpose} onChange={(e) => setPurpose(e.target.value)} />
           </div>
-          <label className="flex items-center gap-2 text-sm text-slate-600">
+          <label className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
             <input type="checkbox" checked={persist} onChange={(e) => setPersist(e.target.checked)} />
             Persist to ledger &amp; payments feed
           </label>
 
-          <p className="rounded-md bg-slate-50 px-3 py-1.5 text-xs text-slate-500">
+          <p className="rounded-lg bg-[var(--surface-2)] px-3 py-2 text-xs text-[var(--text-muted)]">
             {rateLabel()} — dashboard amounts shown in INR.
           </p>
 
-          {error && <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+          {error && (
+            <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>
+          )}
 
           <button className="btn btn-primary w-full justify-center" onClick={() => void run()} disabled={running}>
             {running ? "Evaluating…" : persist ? "Run payment" : "Preview decision"}
           </button>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[var(--text-faint)]">
             Runs the real <span className="font-mono">evaluateEnhancedPayment</span> policy engine before any
             settlement — same code an autonomous agent would hit.
           </p>
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 lg:col-span-2">
         <Reveal key={runCount}>
           <div className="card p-5">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="font-semibold text-slate-800">Decision</h3>
+              <h3 className="font-semibold text-[var(--text)]">Decision</h3>
               {d && <StatusBadge allowed={d.allowed} />}
             </div>
             {!d ? (
-              <p className="text-sm text-slate-400">Run a payment to see the policy decision here.</p>
+              <p className="text-sm text-[var(--text-faint)]">Run a payment to see the policy decision here.</p>
             ) : (
               <div className="space-y-3 text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Outcome</span>
+                  <span className="text-[var(--text-muted)]">Outcome</span>
                   <ReasonChip reason={d.reason} />
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Risk score</span>
+                  <span className="text-[var(--text-muted)]">Risk score</span>
                   {d.riskScore != null ? (
-                    <span className="font-mono text-slate-700">
+                    <span className="font-mono text-[var(--text-secondary)]">
                       <CountUp to={d.riskScore} format={(n) => Math.round(n).toString()} /> / 100
                     </span>
                   ) : (
@@ -221,12 +223,12 @@ export function Simulator({ grants }: { grants: DashboardGrant[] }) {
                 </div>
                 {d.riskFactors?.length ? (
                   <div>
-                    <div className="mb-1 text-slate-500">Risk factors</div>
+                    <div className="mb-1 text-[var(--text-muted)]">Risk factors</div>
                     <ul className="space-y-1">
                       {d.riskFactors.map((f) => (
-                        <li key={f.scorer} className="flex items-center justify-between rounded-md bg-slate-50 px-2.5 py-1">
-                          <span className="text-slate-600">{f.scorer}</span>
-                          <span className="tabular-nums text-slate-500">
+                        <li key={f.scorer} className="flex items-center justify-between rounded-lg bg-[var(--surface-2)] px-3 py-1.5">
+                          <span className="text-[var(--text-muted)]">{f.scorer}</span>
+                          <span className="tabular-nums text-[var(--text-faint)]">
                             {f.score} × {f.weight}
                           </span>
                         </li>
@@ -235,42 +237,42 @@ export function Simulator({ grants }: { grants: DashboardGrant[] }) {
                   </div>
                 ) : null}
                 {d.frequencyUsage && (
-                  <div className="rounded-md bg-orange-50 px-2.5 py-1.5 text-xs text-orange-700">
+                  <div className="rounded-lg bg-orange-50 px-3 py-2 text-xs text-orange-700">
                     {d.frequencyUsage.currentCount}/{d.frequencyUsage.maxCount} payments in the last{" "}
                     {Math.round(d.frequencyUsage.windowMs / 1000)}s
                   </div>
                 )}
-                <div className="grid grid-cols-2 gap-3 border-t border-slate-100 pt-3">
+                <div className="grid grid-cols-1 gap-3 border-t border-[var(--border)] pt-3 sm:grid-cols-2">
                   <div>
-                    <div className="text-xs text-slate-400">Spent</div>
-                    <div className="tabular-nums text-slate-700">{money(d.spent.amount, d.spent.currency)}</div>
+                    <div className="text-xs text-[var(--text-faint)]">Spent</div>
+                    <div className="tabular-nums font-semibold text-[var(--text-secondary)]">{money(d.spent.amount, d.spent.currency)}</div>
                   </div>
                   <div>
-                    <div className="text-xs text-slate-400">Remaining</div>
-                    <div className="tabular-nums text-slate-700">{money(d.remaining.amount, d.remaining.currency)}</div>
+                    <div className="text-xs text-[var(--text-faint)]">Remaining</div>
+                    <div className="tabular-nums font-semibold text-[var(--text-secondary)]">{money(d.remaining.amount, d.remaining.currency)}</div>
                   </div>
                 </div>
                 {result?.persisted && result.transactionHash && (
-                  <div className="flex items-center justify-between border-t border-slate-100 pt-3">
-                    <span className="text-slate-500">Settlement</span>
-                    <span className="font-mono text-xs text-slate-600">{result.transactionHash}</span>
+                  <div className="flex items-center justify-between border-t border-[var(--border)] pt-3">
+                    <span className="text-[var(--text-muted)]">Settlement</span>
+                    <span className="font-mono text-xs text-[var(--text-muted)]">{result.transactionHash}</span>
                   </div>
                 )}
                 {result?.persisted === false && (
-                  <p className="text-xs text-slate-400">Dry-run — nothing was recorded.</p>
+                  <p className="text-xs text-[var(--text-faint)]">Dry-run — nothing was recorded.</p>
                 )}
 
                 {explanation && (
-                  <div className="mt-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <div className="mt-3 rounded-lg border border-[var(--border-strong)] bg-[var(--surface-2)] p-3">
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-slate-800">{explanation.title}</span>
-                      <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-xs text-slate-500">why?</span>
+                      <span className="font-semibold text-[var(--text)]">{explanation.title}</span>
+                      <span className="rounded-md bg-[var(--surface-3)] px-1.5 py-0.5 font-mono text-xs text-[var(--text-muted)]">why?</span>
                     </div>
-                    <p className="mt-1 text-xs text-slate-600">{explanation.summary}</p>
-                    <ul className="mt-2 space-y-1 text-xs text-slate-500">
+                    <p className="mt-1 text-xs text-[var(--text-muted)]">{explanation.summary}</p>
+                    <ul className="mt-2 space-y-1 text-xs text-[var(--text-faint)]">
                       {explanation.detail.map((line, i) => (
                         <li key={i} className="flex gap-2">
-                          <span className="text-slate-300">•</span>
+                          <span className="text-[var(--text-faint)]">•</span>
                           <span>{line}</span>
                         </li>
                       ))}
@@ -285,16 +287,16 @@ export function Simulator({ grants }: { grants: DashboardGrant[] }) {
         {history.length > 0 && (
           <div className="card">
             <div className="card-header">Session history</div>
-            <ul className="divide-y divide-slate-50 text-sm">
+            <ul className="divide-y divide-[var(--border)] text-sm">
               {history.map((h, i) => (
-                <li key={i} className="flex items-center justify-between px-5 py-2">
-                  <span className="text-xs text-slate-400">{fmtTime(h.at)}</span>
-                  <span className="font-mono text-xs text-slate-600">
+                <li key={i} className="flex items-center justify-between px-5 py-2.5 transition-colors hover:bg-[var(--surface-2)]">
+                  <span className="text-xs text-[var(--text-faint)]">{fmtTime(h.at)}</span>
+                  <span className="font-mono text-xs text-[var(--text-muted)]">
                     {money(h.amount, displayCurrency)} → {h.merchant}
                   </span>
                   <span className="flex items-center gap-2">
                     <StatusBadge allowed={h.allowed} />
-                    <span className="font-mono text-xs text-slate-400">{h.reason}</span>
+                    <span className="font-mono text-xs text-[var(--text-faint)]">{h.reason}</span>
                   </span>
                 </li>
               ))}
