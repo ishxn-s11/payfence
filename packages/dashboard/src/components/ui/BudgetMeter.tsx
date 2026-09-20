@@ -18,7 +18,7 @@ export function BudgetMeter({
 }) {
   const barRef = useRef<HTMLDivElement>(null);
   const tone =
-    percent >= 95 ? "#d03b3b" : percent >= 75 ? "#fab219" : percent >= 40 ? "#eb6834" : "#2a78d6";
+    percent >= 95 ? "#ef4444" : percent >= 75 ? "#f59e0b" : percent >= 40 ? "#f97316" : "#3b82f6";
   const width = Math.min(100, percent);
 
   useEffect(() => {
@@ -37,12 +37,19 @@ export function BudgetMeter({
 
   return (
     <div>
-      <div className="mb-1 flex items-baseline justify-between text-sm">
-        <span className="text-slate-500">{money(spent, currency)} spent</span>
-        <span className="text-slate-400">of {money(total, currency)}</span>
+      <div className="mb-2 flex items-baseline justify-between">
+        <span className="text-[0.875rem] font-bold tabular-nums text-[var(--text-secondary)]">{money(spent, currency)}</span>
+        <span className="text-[0.75rem] text-[var(--text-faint)]">of {money(total, currency)}</span>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
-        <div ref={barRef} className="h-full rounded-full transition-none" style={{ background: tone }} />
+      <div className="h-2.5 w-full overflow-hidden rounded-full bg-[var(--surface-2)]">
+        <div
+          ref={barRef}
+          className="h-full rounded-full"
+          style={{ background: tone }}
+        />
+      </div>
+      <div className="mt-1.5 text-right text-[0.6875rem] font-semibold text-[var(--text-faint)]">
+        {percent}% used
       </div>
     </div>
   );

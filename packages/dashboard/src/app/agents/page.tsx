@@ -47,14 +47,14 @@ export default function AgentsPage() {
 
   return (
     <Reveal>
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">Agents</h1>
-        <p className="text-sm text-slate-500">The autonomous agents your organization has enrolled.</p>
+        <h1 className="font-display text-3xl font-extrabold tracking-tight text-[var(--text)] sm:text-4xl">Agents</h1>
+        <p className="mt-2 text-[0.9375rem] leading-relaxed text-[var(--text-muted)]">The autonomous agents your organization has enrolled.</p>
       </div>
 
       <Card title="Enroll an agent">
-        <form onSubmit={create} className="flex flex-wrap items-end gap-3">
+        <form onSubmit={create} className="flex flex-wrap items-end gap-4">
           <div className="min-w-40 flex-1">
             <label className="label">Agent name</label>
             <input className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. research-01" />
@@ -63,26 +63,31 @@ export default function AgentsPage() {
             <label className="label">Description</label>
             <input className="input" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="What this agent does" />
           </div>
-          <button className="btn btn-primary" disabled={creating || !name.trim()}>
+          <button className="btn btn-primary text-sm" disabled={creating || !name.trim()}>
             {creating ? "Adding…" : "Enroll agent"}
           </button>
         </form>
       </Card>
 
       {loading ? (
-        <div className="py-16 text-center text-sm text-slate-400">Loading…</div>
+        <div className="flex items-center justify-center py-24">
+          <div className="flex items-center gap-3 text-sm text-[var(--text-muted)]">
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--border-strong)] border-t-[var(--brand)]" />
+            Loading…
+          </div>
+        </div>
       ) : agents.length === 0 ? (
         <EmptyState title="No agents enrolled" hint="Enroll an agent above, then create a grant to control what it can spend." />
       ) : (
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {agents.map((a) => (
-            <Link key={a.id} href={`/agents/${a.id}`} className="card p-5 transition-shadow hover:shadow">
+            <Link key={a.id} href={`/agents/${a.id}`} className="group card p-5 transition-all duration-200 hover:border-[var(--border-accent)]">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-slate-800">{a.name}</h3>
+                <h3 className="text-[1.0625rem] font-bold text-[var(--text)] group-hover:text-[var(--brand)] transition-colors">{a.name}</h3>
                 <span className="chip bg-brand-50 text-brand-700">{grants[a.id] ?? 0} grants</span>
               </div>
-              <p className="mt-1 line-clamp-2 text-sm text-slate-500">{a.description || "No description"}</p>
-              <div className="mt-3 font-mono text-xs text-slate-400">{a.id}</div>
+              <p className="mt-2 line-clamp-2 text-[0.875rem] leading-relaxed text-[var(--text-muted)]">{a.description || "No description"}</p>
+              <div className="mt-3 font-mono text-xs text-[var(--text-faint)]">{a.id}</div>
             </Link>
           ))}
         </div>

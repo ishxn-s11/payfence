@@ -186,10 +186,10 @@ export function GrantForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
+        <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>
       )}
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className="label">Agent</label>
           <select
@@ -220,9 +220,9 @@ export function GrantForm({
         </div>
       </div>
 
-      <fieldset className="space-y-3 rounded-lg border border-slate-200 p-4">
-        <legend className="px-1 text-sm font-semibold text-slate-700">Budget & limits</legend>
-        <div className="grid grid-cols-3 gap-4">
+      <fieldset className="space-y-3 rounded-xl border border-[var(--border)] bg-[var(--surface-2)]/50 p-4">
+        <legend className="px-1 text-sm font-semibold text-[var(--text-secondary)]">Budget & limits</legend>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div>
             <label className="label">Total budget</label>
             <input
@@ -256,7 +256,7 @@ export function GrantForm({
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">Merchant allowlist (comma-separated)</label>
             <input
@@ -278,12 +278,12 @@ export function GrantForm({
         </div>
       </fieldset>
 
-      <fieldset className="space-y-3 rounded-lg border border-slate-200 p-4">
-        <legend className="px-1 text-sm font-semibold text-slate-700">
-          Frequency limits <span className="font-normal text-slate-400">(rate limiting)</span>
+      <fieldset className="space-y-3 rounded-xl border border-[var(--border)] bg-[var(--surface-2)]/50 p-4">
+        <legend className="px-1 text-sm font-semibold text-[var(--text-secondary)]">
+          Frequency limits <span className="font-normal text-[var(--text-faint)]">(rate limiting)</span>
         </legend>
         {form.frequency.length === 0 && (
-          <p className="text-xs text-slate-400">No rate limits — payments are uncapped in rate.</p>
+          <p className="text-xs text-[var(--text-faint)]">No rate limits — payments are uncapped in rate.</p>
         )}
         {form.frequency.map((fl, i) => (
           <div key={i} className="flex flex-wrap items-end gap-3">
@@ -315,7 +315,7 @@ export function GrantForm({
                 }
               />
             </div>
-            <label className="flex items-center gap-1 pb-2 text-xs text-slate-500">
+            <label className="flex items-center gap-1 pb-2 text-xs text-[var(--text-muted)]">
               <input
                 type="checkbox"
                 checked={fl.perMerchant}
@@ -325,7 +325,7 @@ export function GrantForm({
               />
               per merchant
             </label>
-            <label className="flex items-center gap-1 pb-2 text-xs text-slate-500">
+            <label className="flex items-center gap-1 pb-2 text-xs text-[var(--text-muted)]">
               <input
                 type="checkbox"
                 checked={fl.perPurpose}
@@ -349,10 +349,10 @@ export function GrantForm({
         </button>
       </fieldset>
 
-      <fieldset className="space-y-3 rounded-lg border border-slate-200 p-4">
-        <legend className="px-1 text-sm font-semibold text-slate-700">Rolling window budgets</legend>
+      <fieldset className="space-y-3 rounded-xl border border-[var(--border)] bg-[var(--surface-2)]/50 p-4">
+        <legend className="px-1 text-sm font-semibold text-[var(--text-secondary)]">Rolling window budgets</legend>
         {form.rolling.length === 0 && (
-          <p className="text-xs text-slate-400">No rolling windows — only the lifetime budget applies.</p>
+          <p className="text-xs text-[var(--text-faint)]">No rolling windows — only the lifetime budget applies.</p>
         )}
         {form.rolling.map((rw, i) => (
           <div key={i} className="flex flex-wrap items-end gap-3">
@@ -409,9 +409,9 @@ export function GrantForm({
         </button>
       </fieldset>
 
-      <fieldset className="space-y-3 rounded-lg border border-slate-200 p-4">
-        <legend className="px-1 text-sm font-semibold text-slate-700">Risk policy</legend>
-        <label className="flex items-center gap-2 text-sm text-slate-600">
+      <fieldset className="space-y-3 rounded-xl border border-[var(--border)] bg-[var(--surface-2)]/50 p-4">
+        <legend className="px-1 text-sm font-semibold text-[var(--text-secondary)]">Risk policy</legend>
+        <label className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
           <input
             type="checkbox"
             checked={form.riskEnabled}
@@ -423,7 +423,7 @@ export function GrantForm({
           <div className="space-y-3">
             <div>
               <label className="label">
-                Block above risk score: <span className="font-semibold">{form.riskMax}</span>
+                Block above risk score: <span className="font-semibold text-[var(--text)]">{form.riskMax}</span>
               </label>
               <input
                 type="range"
@@ -435,16 +435,16 @@ export function GrantForm({
               />
             </div>
             <div className="space-y-2">
-              <div className="text-xs font-medium text-slate-500">Scorers & weights</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-faint)]">Scorers & weights</div>
               {SCORER_TYPES.map((s) => {
                 const active = form.scorers.some((x) => x.type === s.type);
                 return (
                   <div key={s.type} className="flex items-center gap-3">
-                    <label className="flex w-40 items-center gap-2 text-sm text-slate-600">
+                    <label className="flex w-40 items-center gap-2 text-sm text-[var(--text-muted)]">
                       <input type="checkbox" checked={active} onChange={() => toggleScorer(s.type, 0.5)} />
                       {s.label}
                     </label>
-                    <span className="hidden text-xs text-slate-400 sm:inline">{s.hint}</span>
+                    <span className="hidden text-xs text-[var(--text-faint)] sm:inline">{s.hint}</span>
                     <input
                       className="input w-24"
                       type="number"
@@ -463,7 +463,7 @@ export function GrantForm({
         )}
       </fieldset>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label className="label">Expires (optional)</label>
           <input
@@ -475,7 +475,7 @@ export function GrantForm({
         </div>
       </div>
 
-      <div className="flex items-center justify-end gap-2 border-t border-slate-100 pt-4">
+      <div className="flex items-center justify-end gap-2 border-t border-[var(--border)] pt-4">
         <button type="button" className="btn btn-secondary" onClick={onCancel}>
           Cancel
         </button>
