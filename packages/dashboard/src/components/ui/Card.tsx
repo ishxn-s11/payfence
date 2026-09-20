@@ -15,7 +15,7 @@ export function Card({
     <section className={`card ${className}`}>
       {(title || action) && (
         <div className="card-header flex items-center justify-between">
-          <span>{title}</span>
+          <span className="text-[var(--text-secondary)]">{title}</span>
           {action}
         </div>
       )}

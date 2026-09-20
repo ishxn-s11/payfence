@@ -17,10 +17,10 @@ export default function PaymentsPage() {
 
   return (
     <Reveal>
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">Payments</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="font-display text-3xl font-extrabold tracking-tight text-[var(--text)] sm:text-4xl">Payments</h1>
+        <p className="mt-2 text-[0.9375rem] leading-relaxed text-[var(--text-muted)]">
           Live feed of every payment attempt and its policy decision — before and after settlement.
         </p>
       </div>

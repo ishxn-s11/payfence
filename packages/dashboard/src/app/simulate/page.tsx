@@ -19,13 +19,13 @@ export default function SimulatePage() {
     <Reveal>
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">Policy simulator</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="font-display text-2xl font-bold tracking-tight text-[var(--text)]">Policy simulator</h1>
+        <p className="mt-1 text-sm text-[var(--text-muted)]">
           Craft a policy through the real engine — every rule, before settlement.
         </p>
       </div>
       {grants.length === 0 ? (
-        <p className="text-sm text-slate-400">Create an active grant first, or load demo data.</p>
+        <p className="text-sm text-[var(--text-faint)]">Create an active grant first, or load demo data.</p>
       ) : (
         <Simulator grants={grants} />
       )}

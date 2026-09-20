@@ -81,6 +81,35 @@ export function getSpendSeries(orgId: string = DEFAULT_ORG.id, days = 14): Serie
   return points;
 }
 
+export function getMonthlySpendSeries(orgId: string = DEFAULT_ORG.id, year: number, month: number): SeriesPoint[] {
+  // month is 1-indexed (1 = January)
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const prefix = `${year}-${pad(month)}`;
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  const rows = getDb()
+    .prepare(
+      `SELECT substr(created_at, 1, 10) AS day, SUM(amount_minor_units) AS total
+       FROM payment_attempts
+       WHERE org_id = ? AND allowed = 1 AND substr(created_at, 1, 7) = ?
+       GROUP BY day ORDER BY day`,
+    )
+    .all(orgId, prefix) as Row[];
+
+  const byDay = new Map<string, bigint>();
+  for (const row of rows) {
+    byDay.set(String(row.day), BigInt(String(row.total)));
+  }
+
+  const points: SeriesPoint[] = [];
+  for (let d = 1; d <= daysInMonth; d += 1) {
+    const day = `${prefix}-${pad(d)}`;
+    const total = byDay.get(day) ?? 0n;
+    points.push({ label: day, value: fromMinorUnits(total, DEFAULT_CURRENCY).amount });
+  }
+  return points;
+}
+
 export function getDenialBreakdown(orgId: string = DEFAULT_ORG.id): CountItem[] {
   const rows = getDb()
     .prepare(
